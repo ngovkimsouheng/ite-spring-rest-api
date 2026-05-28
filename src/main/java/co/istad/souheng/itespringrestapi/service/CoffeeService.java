@@ -12,6 +12,11 @@ public interface CoffeeService {
 
     //get coffee by id
     CoffeeResponse getCoffeeById(int id);
+    //get coffee by price
+    CoffeeResponse getCoffeeByPrice(double price);
     //search by name
     CoffeeResponse searchCoffeeByName(String name);
+
+
+
 }

@@ -22,8 +22,7 @@ public class CoffeeController {
         return coffeeService.getAllCoffees();
     }
 
-
-    @GetMapping("/{id}")
+    @GetMapping("/id/{id}")
     public CoffeeResponse getCoffeeById(
             @PathVariable Integer id
     ) {
@@ -31,6 +30,15 @@ public class CoffeeController {
         log.info("get id: {}", id);
 
         return coffeeService.getCoffeeById(id);
+    }
+
+    @GetMapping("/price/{price}")
+    public CoffeeResponse getCoffeeByPrice(
+
+            @PathVariable Double price
+    ) {
+        log.info("get price: {}", price);
+        return coffeeService.getCoffeeByPrice(price);
     }
 
     @GetMapping("/search")
@@ -42,6 +50,22 @@ public class CoffeeController {
         log.info("get name: {}", name);
 
         return coffeeService.searchCoffeeByName(name);
+    }
+
+    @GetMapping("/price")
+    public CoffeeResponse searchCoffeeByPrice(
+            @RequestParam (required = false, defaultValue = "")  Double price
+    ){
+        log.info("get price: {}", price);
+        return coffeeService.getCoffeeByPrice(price);
+    }
+
+    @GetMapping("/id")
+    public CoffeeResponse searchCoffeeById(
+            @RequestParam (required = false, defaultValue = "")  Integer id
+    ){
+        log.info("get coffeeById");
+        return coffeeService.getCoffeeById(id);
     }
 
 }

@@ -36,13 +36,15 @@ public class CoffeeServiceImpl implements CoffeeService {
         return coffees.stream()
                 .filter(coffee -> coffee.getId() == id)
                 .map(coffee -> new CoffeeResponse(
-                        coffee.getName(),
-                        coffee.getDescription(),
-                        coffee.getPrice()
+                                coffee.getName(),
+                                coffee.getDescription(),
+                                coffee.getPrice()
                 ))
                 .findFirst()
                 .orElse(null);
     }
+
+
 
     @Override
     public CoffeeResponse searchCoffeeByName(String name) {
@@ -57,6 +59,21 @@ public class CoffeeServiceImpl implements CoffeeService {
                 .findFirst()
                 .orElse(null);
     }
+
+    @Override
+    public CoffeeResponse getCoffeeByPrice(double price) {
+        List<Coffee> coffees = coffeeRepository.beanCoffee();
+        return coffees.stream()
+                .filter(coffee -> coffee.getPrice().equals(price))
+                .map(coffee -> new CoffeeResponse(
+                        coffee.getName(),
+                        coffee.getDescription(),
+                        coffee.getPrice()
+                ))
+                .findFirst()
+                .orElse(null);
+    }
+
 
 
 }
