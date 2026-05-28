@@ -9,5 +9,4 @@ public class IteSpringRestApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(IteSpringRestApiApplication.class, args);
     }
-
 }

@@ -23,7 +23,40 @@ public class CoffeeServiceImpl implements CoffeeService {
 
         return coffees.stream()
 //                .filter(coffee -> coffee.getCode()> 2)
-                .map(coffee -> new CoffeeResponse(coffee.getName(), coffee.getDescription()))
+                .map(coffee -> new CoffeeResponse(coffee.getName(), coffee.getDescription(), coffee.getPrice()))
                 .toList();
     }
+
+
+    @Override
+    public CoffeeResponse getCoffeeById(int id) {
+
+        List<Coffee> coffees = coffeeRepository.beanCoffee();
+
+        return coffees.stream()
+                .filter(coffee -> coffee.getId() == id)
+                .map(coffee -> new CoffeeResponse(
+                        coffee.getName(),
+                        coffee.getDescription(),
+                        coffee.getPrice()
+                ))
+                .findFirst()
+                .orElse(null);
+    }
+
+    @Override
+    public CoffeeResponse searchCoffeeByName(String name) {
+        List<Coffee> coffees = coffeeRepository.beanCoffee();
+        return coffees.stream()
+                .filter(coffee -> coffee.getName().toLowerCase().contains(name.toLowerCase()))
+                .map(coffee -> new CoffeeResponse(
+                        coffee.getName(),
+                        coffee.getDescription(),
+                        coffee.getPrice()
+                ))
+                .findFirst()
+                .orElse(null);
+    }
+
+
 }

@@ -10,4 +10,8 @@ public interface CoffeeService {
 
     List<CoffeeResponse> getAllCoffees();
 
+    //get coffee by id
+    CoffeeResponse getCoffeeById(int id);
+    //search by name
+    CoffeeResponse searchCoffeeByName(String name);
 }
