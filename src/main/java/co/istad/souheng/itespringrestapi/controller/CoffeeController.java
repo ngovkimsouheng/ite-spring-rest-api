@@ -1,8 +1,11 @@
 package co.istad.souheng.itespringrestapi.controller;
 
 import co.istad.souheng.itespringrestapi.dto.CoffeeResponse;
+import co.istad.souheng.itespringrestapi.dto.CreateCoffeeRequest;
 import co.istad.souheng.itespringrestapi.service.CoffeeService;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +15,7 @@ import java.util.List;
 @RequestMapping("/api/v1/coffees")
 public class CoffeeController {
     private final CoffeeService coffeeService;
+
 
     public CoffeeController(CoffeeService coffeeService) {
         this.coffeeService = coffeeService;
@@ -43,7 +47,7 @@ public class CoffeeController {
 
     @GetMapping("/search")
     public CoffeeResponse searchCoffeeByName(
-            @RequestParam(required = false,
+             @RequestParam(required = false,
                     defaultValue = "") String name
     ) {
 
@@ -68,4 +72,11 @@ public class CoffeeController {
         return coffeeService.getCoffeeById(id);
     }
 
-}
+
+    @ResponseStatus(HttpStatus.CREATED)
+    @PostMapping("/add")
+    public CoffeeResponse addCoffee(@Valid @RequestBody CreateCoffeeRequest createCoffeeRequest){
+        log.info("add coffee");
+        return coffeeService.addCoffee(createCoffeeRequest);
+    }
+}   
