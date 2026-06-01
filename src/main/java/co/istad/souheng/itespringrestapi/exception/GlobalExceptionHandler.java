@@ -13,26 +13,26 @@ import java.util.List;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ErrorResponse handleValidationException(
-            MethodArgumentNotValidException ex
-    ) {
-
-        List<ValidationError> errors = ex.getBindingResult()
-                .getFieldErrors()
-                .stream()
-                .map(error -> new ValidationError(
-                        error.getField(),
-                        error.getDefaultMessage()
-                ))
-                .toList();
-
-        return new ErrorResponse(
-                false,
-                400,
-                "Validation error",
-                errors
-        );
-    }
+//    @ResponseStatus(HttpStatus.BAD_REQUEST)
+//    @ExceptionHandler(MethodArgumentNotValidException.class)
+//    public ErrorResponse handleValidationException(
+//            MethodArgumentNotValidException ex
+//    ) {
+//
+//        List<ValidationError> errors = ex.getBindingResult()
+//                .getFieldErrors()
+//                .stream()
+//                .map(error -> new ValidationError(
+//                        error.getField(),
+//                        error.getDefaultMessage()
+//                ))
+//                .toList();
+//
+//        return new ErrorResponse(
+//                false,
+//                400,
+//                "Validation error",
+//                errors
+//        );
+//    }
 }
