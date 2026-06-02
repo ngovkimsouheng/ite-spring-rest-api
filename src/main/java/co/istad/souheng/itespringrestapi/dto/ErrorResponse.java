@@ -1,11 +1,14 @@
 package co.istad.souheng.itespringrestapi.dto;
 
+import lombok.Builder;
+
 import java.util.List;
 
-public record ErrorResponse(
+@Builder
+public record ErrorResponse<T>(
         Boolean status,
         Integer code,
         String message,
-        List<ValidationError> error
+       T error
 ) {
 }

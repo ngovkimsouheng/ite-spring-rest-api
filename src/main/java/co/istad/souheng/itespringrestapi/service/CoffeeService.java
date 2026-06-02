@@ -3,6 +3,7 @@ package co.istad.souheng.itespringrestapi.service;
 import co.istad.souheng.itespringrestapi.domain.Coffee;
 import co.istad.souheng.itespringrestapi.dto.CoffeeResponse;
 import co.istad.souheng.itespringrestapi.dto.CreateCoffeeRequest;
+import co.istad.souheng.itespringrestapi.dto.UpdateCoffeeRequest;
 import co.istad.souheng.itespringrestapi.repository.CoffeeRepository;
 
 import java.util.List;
@@ -23,5 +24,8 @@ public interface CoffeeService {
     //search by name
     CoffeeResponse searchCoffeeByName(String name);
 
+
+    CoffeeResponse  updateCoffeeById(Integer id,   UpdateCoffeeRequest updateCoffeeRequest);
+    CoffeeResponse deleteCoffee(Integer id);
 
 }

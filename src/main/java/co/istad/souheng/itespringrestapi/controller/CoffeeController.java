@@ -2,6 +2,7 @@ package co.istad.souheng.itespringrestapi.controller;
 
 import co.istad.souheng.itespringrestapi.dto.CoffeeResponse;
 import co.istad.souheng.itespringrestapi.dto.CreateCoffeeRequest;
+import co.istad.souheng.itespringrestapi.dto.UpdateCoffeeRequest;
 import co.istad.souheng.itespringrestapi.service.CoffeeService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -78,5 +79,20 @@ public class CoffeeController {
     public CoffeeResponse addCoffee(@Valid @RequestBody CreateCoffeeRequest createCoffeeRequest){
         log.info("add coffee");
         return coffeeService.addCoffee(createCoffeeRequest);
+    }
+
+
+
+    @PutMapping("/update/{id}")
+    public CoffeeResponse updateCoffee(@PathVariable Integer id, UpdateCoffeeRequest updateCoffeeRequest){
+        log.info("update coffee");
+        return coffeeService.updateCoffeeById(id,updateCoffeeRequest);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{id}")
+    public CoffeeResponse deleteCoffee(@PathVariable Integer id){
+        log.info("delete coffee");
+        return coffeeService.deleteCoffee(id);
     }
 }   

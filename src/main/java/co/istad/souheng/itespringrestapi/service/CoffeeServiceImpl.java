@@ -3,8 +3,11 @@ package co.istad.souheng.itespringrestapi.service;
 import co.istad.souheng.itespringrestapi.domain.Coffee;
 import co.istad.souheng.itespringrestapi.dto.CoffeeResponse;
 import co.istad.souheng.itespringrestapi.dto.CreateCoffeeRequest;
+import co.istad.souheng.itespringrestapi.dto.UpdateCoffeeRequest;
 import co.istad.souheng.itespringrestapi.repository.CoffeeRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Random;
@@ -13,11 +16,11 @@ import java.util.random.RandomGenerator;
 @Service
 public class CoffeeServiceImpl implements CoffeeService {
 
-//    public final CoffeeRepository coffeeRepository;
+    public final CoffeeRepository coffeeRepository;
     public final List<Coffee> coffeeBean;
 
     public CoffeeServiceImpl(CoffeeRepository coffeeRepository, List<Coffee> coffeeBean) {
-//        this.coffeeRepository = coffeeRepository;
+        this.coffeeRepository = coffeeRepository;
         this.coffeeBean = coffeeBean;
     }
 
@@ -30,11 +33,15 @@ public class CoffeeServiceImpl implements CoffeeService {
         coffee.setName(createCoffeeRequest.name());
         coffee.setDescription(createCoffeeRequest.description());
         coffee.setPrice(createCoffeeRequest.price());
+        boolean isExisting = coffeeRepository.beanCoffee().stream()
+                .anyMatch(existingCoffee -> existingCoffee.getId() == coffee.getId());
 
-//
-//        boolean isExist = coffeeBean.stream().
+        if (isExisting) {
+            throw new RuntimeException("Coffee ID already exists");
+        }
 
-        return new CoffeeResponse(coffee.getId() ,coffee.getName(), coffee.getDescription(), coffee.getPrice());
+        coffeeBean.add(coffee);
+        return new CoffeeResponse(coffee.getId(), coffee.getName(), coffee.getDescription(), coffee.getPrice());
     }
 
 
@@ -97,6 +104,42 @@ public class CoffeeServiceImpl implements CoffeeService {
                 ))
                 .findFirst()
                 .orElse(null);
+    }
+
+    @Override
+    public CoffeeResponse updateCoffeeById(Integer id, UpdateCoffeeRequest updateCoffeeRequest) {
+
+        return coffeeBean.stream().
+                filter(coffee -> coffee.getId().equals(id)).findFirst()
+                .map(coffee -> {
+                    coffee.setName(updateCoffeeRequest.name());
+                    coffee.setDescription(updateCoffeeRequest.description());
+                    coffee.setPrice(updateCoffeeRequest.price());
+                    return coffee;
+                })
+                .map(coffee -> new CoffeeResponse(
+                        coffee.getId(),
+                        coffee.getName(),
+                        coffee.getDescription(),
+                        coffee.getPrice()
+                )).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Coffee with id = %d  is not found", id)));
+    }
+
+    @Override
+    public CoffeeResponse deleteCoffee(Integer id) {
+        return coffeeBean.stream()
+                .filter(coffee -> coffee.getId().equals(id))
+                .findFirst()
+                .map(coffee -> {
+                    coffeeBean.remove(coffee);
+                    return new CoffeeResponse(
+                            coffee.getId(),
+                            coffee.getName(),
+                            coffee.getDescription(),
+                            coffee.getPrice()
+                    );
+                })
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Coffee with id = %d  is not found", id)));
     }
 
 
